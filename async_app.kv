@@ -1,0 +1,77 @@
+ScreenManager:
+    id: screen_manager
+    #transition: FadeTransition()
+    MainScreen:
+        id: main_screen
+        name: 'main_screen'
+        manager: 'screen_manager'
+    MenuScreen:
+        id: menu_screen
+        name: 'menu_screen'
+        manager: 'screen_manager'
+
+<MenuScreen>:
+    color: "black"
+    BoxLayout:
+        orientation: 'vertical'
+        Label:
+            text: 'ASCII Life'
+            font_size: 50
+        Button:
+            text_color: "white"
+            text: 'Oh no go back'
+            font_size: 24
+            on_release: app.root.current = 'main_screen'
+        Label:
+            text: 'Menu label'
+
+<MainScreen>
+    color: "black"
+    BoxLayout:
+        orientation: 'vertical'
+        color: "black"
+        BoxLayout:
+            id: pltbox
+            size_hint_y: 1
+            pos_hint: {"top":1}
+        BoxLayout:
+            ToggleButton:
+                id: btn1
+                group: 'a'
+                text: 'Start_client'
+                allow_no_selection: False
+                on_state: if self.state == 'down': root.sleeping_callback()
+            ToggleButton:
+                id: btn2
+                group: 'a'
+                text: 'Stop_client'
+                allow_no_selection: False
+                on_state: if self.state == 'down': root.stop_client()
+            ToggleButton:
+                id: btn3
+                group: 'a'
+                text: 'Scan_devices'
+                allow_no_selection: False
+                on_state: if self.state == 'down': root.start_scan()
+        Label:
+            id: label
+            text: ''
+
+        Label:
+            id: blt_message
+            #text: 'Bluetooth message'
+        Label:
+            id: blt_b
+            #text: 'Bluetooth B message'
+        Label:
+            id: blt_e
+            #text: 'Bluetooth E message'
+        Label:
+            id: label_print
+            font_size: 32
+            #text: 'Huge counter for screen manager'
+        Button:
+            text: 'Goto settings'
+            on_press:
+                app.root.transition.direction = 'left'
+                app.root.current = 'menu_screen'
