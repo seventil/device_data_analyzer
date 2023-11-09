@@ -14,12 +14,14 @@ import matplotlib.pyplot as plt
 #import numpy as np
 from kivy.config import ConfigParser
 import utility
+import os
 
 ASYNC_APP_UI_TEMPLATE_FILE = "async_app.kv"
 COMMAND_QUEUE_CHECKUP_INTERVAL = 0.2
+DEFAULT_CONNECTOR_CLASS = "Simulation"
 
-config = ConfigParser()
-config.read('config.ini')
+# config = ConfigParser()
+# config.read('config.ini')
 
 
 class AsyncApp(App):
@@ -27,7 +29,7 @@ class AsyncApp(App):
     """
     #blt_client_task = None
 
-    def __init__(self, *args, **kwargs) -> None:
+    def __init__(self, config, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
 
         self.lte_tasks = []
@@ -46,10 +48,12 @@ class AsyncApp(App):
         
         self.command_queue = []
         blt_messages_queue = asyncio.Queue()
-        print(self.common_config)
-        abc = self.common_config["BluetoothClass"]
-        # print(f"xoxoxoxoxox {abc}")
-        self.blt_processor = utility.blt_connector_factory(self.config["COMMON"]["BluetoothClass"])
+
+        try:
+            self.blt_processor = utility.blt_connector_factory(self.config["COMMON"]["BluetoothClass"])
+        except KeyError as key_error:
+            self.blt_processor = utility.blt_connector_factory(DEFAULT_CONNECTOR_CLASS)
+            print("BluetoothClass is not specified in config.ini file") 
         
         self.blt_message_consumer_task = asyncio.ensure_future(
             self.process_lte_messages(blt_messages_queue) # TODO should not end with the end message, should always work, connecting/disconnecting to devices should be inside
@@ -135,6 +139,8 @@ class AsyncApp(App):
 
 
 if __name__ == '__main__':
+    config = ConfigParser()
+    config.read('config.ini')
     asyncio.run(
-        AsyncApp().app_run_with_externals()
+        AsyncApp(config).app_run_with_externals()
     )
