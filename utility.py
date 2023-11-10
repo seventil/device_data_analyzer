@@ -22,7 +22,9 @@ class HardnessTesterData:
 def blt_connector_factory(class_key: str) -> None:
     """ pass
     """
+
     if class_key == "Simulation":
+        # TODO fill up bluetooth module
         # import stuff
         # return class
         return "Simulation class"
@@ -30,3 +32,6 @@ def blt_connector_factory(class_key: str) -> None:
         # import stuff
         # return class
         return "Simulation class"
+    if class_key == "pdbus":
+        pass
+    

@@ -51,10 +51,10 @@ class AsyncApp(App):
 
         try:
             self.blt_processor = utility.blt_connector_factory(self.config["COMMON"]["BluetoothClass"])
-        except KeyError as key_error:
+        except KeyError:
             self.blt_processor = utility.blt_connector_factory(DEFAULT_CONNECTOR_CLASS)
-            print("BluetoothClass is not specified in config.ini file") 
-        
+            print("ERROR: BluetoothClass is not specified in config.ini file") 
+
         self.blt_message_consumer_task = asyncio.ensure_future(
             self.process_lte_messages(blt_messages_queue) # TODO should not end with the end message, should always work, connecting/disconnecting to devices should be inside
         )
