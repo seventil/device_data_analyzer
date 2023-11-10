@@ -24,14 +24,11 @@ def blt_connector_factory(class_key: str) -> None:
     """
 
     if class_key == "Simulation":
-        # TODO fill up bluetooth module
-        # import stuff
-        # return class
-        return "Simulation class"
+        from bluetooth.simulation import BltMessageProcessorSimulation
+        return BltMessageProcessorSimulation
     if class_key == "Bleak":
         # import stuff
         # return class
         return "Simulation class"
     if class_key == "pdbus":
         pass
-    

@@ -44,16 +44,17 @@ class AsyncApp(App):
         '''This will run both methods asynchronously and then block until they
         are finished
         '''
-        print("xpxpx run or build first")
         
         self.command_queue = []
         blt_messages_queue = asyncio.Queue()
 
         try:
-            self.blt_processor = utility.blt_connector_factory(self.config["COMMON"]["BluetoothClass"])
+            blt_class = utility.blt_connector_factory(self.config["COMMON"]["BluetoothClass"])
         except KeyError:
-            self.blt_processor = utility.blt_connector_factory(DEFAULT_CONNECTOR_CLASS)
+            blt_class = utility.blt_connector_factory(DEFAULT_CONNECTOR_CLASS)
             print("ERROR: BluetoothClass is not specified in config.ini file") 
+        self.blt_processor = blt_class(blt_messages_queue)
+
 
         self.blt_message_consumer_task = asyncio.ensure_future(
             self.process_lte_messages(blt_messages_queue) # TODO should not end with the end message, should always work, connecting/disconnecting to devices should be inside
@@ -106,6 +107,7 @@ class AsyncApp(App):
                 break
             print("Received callback data via async queue: ",  data)
             if self.root is not None: #Self root is ScreenManager object
+                # TODO: come up with a solution to datalog. should it be here, should it be at all?
                 self.hardness_tester.update_data(data)
                 with open("datalog.txt", "a") as fstream:
                     fstream.write(str(data))
