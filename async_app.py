@@ -12,6 +12,9 @@ from screens import MainScreen, MenuScreen
 from kivy.garden.matplotlib import FigureCanvasKivyAgg
 import matplotlib.pyplot as plt
 #import numpy as np
+from kivy.core.window import Window
+from kivy.config import Config
+
 from kivy.config import ConfigParser
 import utility
 import os
@@ -19,6 +22,7 @@ import os
 ASYNC_APP_UI_TEMPLATE_FILE = "async_app.kv"
 COMMAND_QUEUE_CHECKUP_INTERVAL = 0.2
 DEFAULT_CONNECTOR_CLASS = "Simulation"
+Config.set('graphics','resizable', False)
 
 # config = ConfigParser()
 # config.read('config.ini')
@@ -38,6 +42,7 @@ class AsyncApp(App):
         self.config = config
 
     def build(self) -> ScreenManager:
+        Window.size = (700,500)
         return Builder.load_file(ASYNC_APP_UI_TEMPLATE_FILE)
 
     async def app_run_with_externals(self):
