@@ -42,7 +42,7 @@ class AsyncApp(App):
         self.config = config
 
     def build(self) -> ScreenManager:
-        Window.size = (700,500)
+        Window.size = (1024,780)
         return Builder.load_file(ASYNC_APP_UI_TEMPLATE_FILE)
 
     async def app_run_with_externals(self):

@@ -14,11 +14,11 @@
 - Micro SD. Нужна быстрая - выбирайте с маркировкой U1 или выше (https://www.kingston.com/ru/blog/personal-storage/memory-card-speed-classes). 32GB хватит с головой.
 - Экран с HDMI подключением. Пока не выбирал какой и использовал Odroid VU8C, можно например (https://aliexpress.ru/item/1005005793215961.html)
 
-Чтобы подготовить ОС на Orange Pi нужно на странице Orange pi 3 lts выбрать вкладку Download - Debian Image - Downloads.
+Чтобы подготовить ОС на Orange Pi нужно на странице Orange pi 3 lts выбрать вкладку Download - Debian Image (или Ubuntu Image) - Downloads.
 На открывшейся странице скачать самую свежую версию DESKTOP XFCE. На 05.10.2023 это Orangepi3-lts_3.0.8_debian_bullseye_desktop_xfce_linux5.16.17
 Распаковать Архив.
 Установить SD карту в SD-usb переходник (у меня на рабочем месте рабочий - красно-черный) и вставить.
-Проверить, что на карте один раздел NTFS (если записывали на нее дрйго образ, то обязательно) и исправить если это не так. Чтобы
+Проверить, что на карте один раздел NTFS (если записывали на нее другой образ, то обязательно) и исправить если это не так. Чтобы
 исправить на Windows нажмите на иконку поиска (возле Start) и введите `Управление компьютером > Управление дисками`.
 Там должно быть видно SD-карту в подключенных устройствах и сколько на нем разделов. Если несколько, или один неполный - клик правой кнопкой
 и удалить том. Когда Вся память SD-карты не распределена, правой кнопкой -> создать простой том и прокликать все далее.
@@ -36,9 +36,9 @@
 
 Обновляем систему:
 
-`$ sudo apt-get update`
+`$ sudo apt-get update` ### на ubuntu нельзя
 
-`$ sudo apt-get upgrade`
+`$ sudo apt-get upgrade` ### на ubuntu нельзя
 
 `$ sudo apt-get -y install python3-pip`
 
@@ -54,7 +54,21 @@
 
 `$ pip3 install -r requirements.txt`
 
+#### проблемы с garden
 
+garden - библиотека киви, которая позволяет встраивать сторонние библиотеки в киви. Установим библиотеку для прорисовки графиков:
+сначала найдем расположение garden после установки:
+
+`$ pip3 show kivy_garden`
+
+В строке Location будет указан путь к garden, например, `/home/orangepi/.local/lib/python3.10/site-packages`.
+Используем этот адрес для установки дополнительной библиотеки `$ python3 <path to garden> install matplotlib`.
+Сам `.bat` файл garden находится в соседней папке, поэтому команда полностью выглядит так:
+
+`$ python3 /home/orangepi/.local/bin/garden install matplotlib`
+
+https://www.reddit.com/r/kivy/comments/ssotuv/comment/hx2jmr4/
+https://kivy-garden.github.io/
 
 
 
